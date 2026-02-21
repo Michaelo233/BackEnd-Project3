@@ -5,7 +5,7 @@ import * as firestoreRepository from "../repositories/firestoreRepository";
 
 const COLLECTION = "events";
 
-// creating new post 
+// creating new event 
 export const createEvent = async (
     postData: {
         name: string, 
@@ -30,16 +30,33 @@ export const createEvent = async (
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
         };
-
+        
         const event = await firestoreRepository.createDocument<Event>(COLLECTION, newEventData);
-
+        
         return {event, ... newEventData} as Event;
 
     } catch (error: unknown) {
         const errorMessage =
             error instanceof Error ? error.message : "Unknown error";
         throw new Error(
-            `Failed to create post: ${errorMessage}`
+            `Failed to create event: ${errorMessage}`
+        );
+    }
+};
+
+// to get all event in a collection 
+export const getAllEvents = async (): Promise<Event[]> => {
+    try {
+        
+        const events = await firestoreRepository.getAllDocuments<Event>(COLLECTION)
+
+        return events;
+
+    } catch (error: unknown) {
+        const errorMessage =
+            error instanceof Error ? error.message : "Unknown error";
+        throw new Error(
+            `Failed to retrieve all events: ${errorMessage}`
         );
     }
 };
