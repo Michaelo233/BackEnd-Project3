@@ -53,3 +53,23 @@ export const getEventByIdHandler = async (
     }
 };
 
+// handles PUT request to update an existing event
+export const updateEventHandler = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> => {
+    try {
+        const { id } = req.params;
+        const {name, date, capacity, resgistrationCount, status, category} = req.body;
+        const updateData = {name, date, capacity, resgistrationCount, status, category};
+
+        const updatedEvent = await eventService.updateEvent(id as string, updateData);
+
+        res.status(HTTP_STATUS.OK).json(successResponse({updatedEvent}, "Event updated successfully"));
+    } catch (error: unknown) {
+        next(error);
+    }
+};
+
+
