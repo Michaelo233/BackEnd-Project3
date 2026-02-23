@@ -73,3 +73,19 @@ export const updateEventHandler = async (
 };
 
 
+// handles DELETE request to delete an existing event
+export const deleteEventHandler = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> => {
+    try {
+        const { id } = req.params;
+        
+        await eventService.deleteEvent(id as string);
+
+        res.status(HTTP_STATUS.OK).json(successResponse({}, "Event deleted successfully"));
+    } catch (error: unknown) {
+        next(error);
+    }
+};
