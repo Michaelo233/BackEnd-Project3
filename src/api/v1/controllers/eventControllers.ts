@@ -30,7 +30,7 @@ export const getAllEventsHandler = async (
     try {
         const events = await eventService.getAllEvents();
 
-        res.status(HTTP_STATUS.OK).json(successResponse({events}, "Events retrieved successfully"));
+        res.status(HTTP_STATUS.OK).json(successResponse({"count": events.length, events}, "Events retrieved successfully"));
     } catch (error: unknown) {
         next(error);
     }

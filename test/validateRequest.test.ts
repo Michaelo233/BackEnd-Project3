@@ -36,7 +36,7 @@ describe("validateRequest Middleware", () => {
                 registrationCount: Joi.number().integer().max(Joi.ref("capacity"))
             }),
         };
-        mockReq.body = { name: "Duncan MacLeod", capacity: 200, date: "2026-02-23T02:00:00.00Z", status: "active", category: "general", registrationCount: 100 };
+        mockReq.body = { name: "Duncan MacLeod", capacity: 200, date: "2035-02-23T02:00:00.00Z", status: "active", category: "general", registrationCount: 100 };
         const middleware = validateRequest(testSchemas);
 
         // Act
