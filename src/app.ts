@@ -1,5 +1,6 @@
 import express, { Express } from "express";
 import morgan from "morgan";
+import router from "./api/v1/routes/eventRoutes";
 
 const app: Express = express();
 
@@ -7,6 +8,9 @@ const app: Express = express();
 app.use(morgan("combined"));
 
 app.use(express.json());
+
+// add API endpoint routes
+app.use("/api/v1/events", router);
 
 // Interface for health check response
 interface HealthCheckResponse {
