@@ -3,7 +3,7 @@ import * as eventService from "../services/eventService";
 import { successResponse } from "../models/responseModel";
 import { HTTP_STATUS } from "../../../constants/httpConstants";
 
-// handles POST request to create new post
+// handles POST request to create new event
 export const createEventHandler = async (
     req: Request,
     res: Response,
@@ -35,3 +35,21 @@ export const getAllEventsHandler = async (
         next(error);
     }
 };
+
+// handles GET request to read a single event by ID
+export const getEventByIdHandler = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> => {
+    try {
+        const { id } = req.params;
+
+        const event = await eventService.getEventById(id as string);
+
+        res.status(HTTP_STATUS.OK).json(successResponse({event}, "Event retrieved successfully"));
+    } catch (error: unknown) {
+        next(error);
+    }
+};
+
