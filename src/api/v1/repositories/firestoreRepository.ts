@@ -7,17 +7,16 @@ import { db } from "../../../../config/firebaseConfig";
 // }
 
 // to create a new document
-export const createDocument = async <T>(
+export const createDocument = async <T extends { id: string }>(
     collectionName: string,
-    data: Partial<T>
+    data: T
 ): Promise<string> => {
     try {
-        let docRef: FirebaseFirestore.DocumentReference;
-
-        docRef = await db.collection(collectionName).add(data);
+        
+        await db.collection(collectionName).doc(data.id).set(data);
 
         // returns document id for the new post created in the firestore
-        return docRef.id;
+        return data.id;
         
     } catch (error: unknown) {
         const errorMessage =
@@ -59,7 +58,7 @@ export const getDocById = async <T>(collectionName: string, docId: string): Prom
         /// get() function only reads data from docRef pointer
         const snapshot = await docRef.get();
 
-        if(!snapshot)
+        if(!snapshot.exists)
             return null;
 
         return {
