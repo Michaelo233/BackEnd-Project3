@@ -1,6 +1,7 @@
 import express, { Express } from "express";
 import morgan from "morgan";
 import router from "./api/v1/routes/eventRoutes";
+import setupSwagger from "../config/swagger";
 
 const app: Express = express();
 
@@ -30,5 +31,9 @@ app.get("/api/v1/health", (req, res) => {
     };
     res.json(healthData);
 });
+
+// Setup Swagger
+setupSwagger(app);
+
 // Export the app
 export default app;
