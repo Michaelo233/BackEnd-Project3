@@ -91,7 +91,40 @@ router.post("/", validateRequest(eventSchemas.create), eventController.createEve
 
 router.get("/", eventController.getAllEventsHandler);
 
-
+/**
+ * @openapi
+ * /events/{id}:
+ *   get:
+ *     summary: Get an event by ID
+ *     tags: [Posts]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: evt_000001
+ *         description: The event ID
+ *     responses:
+ *       '200':
+ *         description: Event retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Post'
+ *       '400':
+ *         description: Invalid ID supplied
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       '404':
+ *         description: Event not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 
 router.get("/:id", validateRequest(eventSchemas.getById), eventController.getEventByIdHandler);
 
