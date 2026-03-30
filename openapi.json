@@ -1,0 +1,461 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Task Management API Documentation",
+    "version": "1.0.0",
+    "description": "This is the API documentation for the Task Management application."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api/v1",
+      "description": "Local server"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "Post": {
+        "type": "object",
+        "required": [
+          "name",
+          "capacity",
+          "date"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The event's id",
+            "example": "evt_00001"
+          },
+          "name": {
+            "type": "string",
+            "description": "The event name",
+            "example": "RRC Event"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time when the event will happen",
+            "example": "2026-06-15T10:30:00Z"
+          },
+          "capacity": {
+            "type": "number",
+            "description": "The event capacity",
+            "example": 100
+          },
+          "registrationCount": {
+            "type": "number",
+            "description": "Number of registered users",
+            "example": 50
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "cancelled",
+              "completed"
+            ],
+            "description": "The event status",
+            "example": "active"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "conference",
+              "workshop",
+              "meetup",
+              "seminar",
+              "general"
+            ],
+            "description": "The event category",
+            "example": "general"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the event was created",
+            "example": "2024-01-15T10:30:00Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the event was last updated",
+            "example": "2024-01-20T14:45:00Z"
+          }
+        }
+      },
+      "CreatePostRequest": {
+        "type": "object",
+        "required": [
+          "name",
+          "capacity",
+          "date"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "RRC Event"
+          },
+          "capacity": {
+            "type": "number",
+            "example": 100
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-06-15T10:30:00Z"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "cancelled",
+              "completed"
+            ]
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "conference",
+              "workshop",
+              "meetup",
+              "seminar",
+              "general"
+            ]
+          },
+          "registrationCount": {
+            "type": "number",
+            "example": 0
+          }
+        }
+      },
+      "UpdatePostRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "capacity": {
+            "type": "number"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "cancelled",
+              "completed"
+            ]
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "conference",
+              "workshop",
+              "meetup",
+              "seminar",
+              "general"
+            ]
+          },
+          "registrationCount": {
+            "type": "number"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Invalid input data"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/events": {
+      "post": {
+        "summary": "Create a new event item",
+        "tags": [
+          "Posts"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "capacity",
+                  "date"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "RRC Event"
+                  },
+                  "date": {
+                    "type": "string",
+                    "example": "2026-05-12"
+                  },
+                  "capacity": {
+                    "type": "number",
+                    "example": 100
+                  },
+                  "resgistrationCount": {
+                    "type": "number",
+                    "example": 50
+                  },
+                  "status": {
+                    "type": "string",
+                    "example": "active"
+                  },
+                  "category": {
+                    "type": "string",
+                    "example": "general"
+                  },
+                  "createdAt": {
+                    "type": "date",
+                    "example": "2026-03-12"
+                  },
+                  "updatedAt": {
+                    "type": "date",
+                    "example": "2026-03-12"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Post created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Post"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Retrieve all events",
+        "tags": [
+          "Posts"
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of events",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Post"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/events/{id}": {
+      "get": {
+        "summary": "Get an event by ID",
+        "tags": [
+          "Posts"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "evt_000001"
+            },
+            "description": "The event ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Event retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Post"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Event not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update an existing event",
+        "tags": [
+          "Posts"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The event ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Post"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Event not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete an event",
+        "tags": [
+          "Posts"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "evt_000005"
+            },
+            "description": "The event ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Event deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Event deleted successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Event not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "tags": []
+}
