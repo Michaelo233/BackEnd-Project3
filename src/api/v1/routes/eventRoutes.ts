@@ -66,7 +66,28 @@ const router = express.Router();
 
 router.post("/", validateRequest(eventSchemas.create), eventController.createEventHandler);
 
-
+/**
+ * @openapi
+ * /events:
+ *   get:
+ *     summary: Retrieve all events
+ *     tags: [Posts]
+ *     responses:
+ *       '200':
+ *         description: A list of events
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Post'
+ *       '500':
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 
 router.get("/", eventController.getAllEventsHandler);
 
