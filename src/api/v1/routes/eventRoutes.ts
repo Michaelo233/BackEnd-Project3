@@ -128,7 +128,45 @@ router.get("/", eventController.getAllEventsHandler);
 
 router.get("/:id", validateRequest(eventSchemas.getById), eventController.getEventByIdHandler);
 
-
+/**
+ * @openapi
+ * /events/{id}:
+ *   put:
+ *     summary: Update an existing event
+ *     tags: [Posts]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The event ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Post'
+ *     responses:
+ *       '200':
+ *         description: Event updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Post'
+ *       '400':
+ *         description: Invalid input data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       '404':
+ *         description: Event not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 
 router.put("/:id", validateRequest(eventSchemas.update), eventController.updateEventHandler);
 
